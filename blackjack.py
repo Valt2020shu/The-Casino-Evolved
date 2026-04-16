@@ -113,3 +113,33 @@ def game_end(House, Challenger):
             print("Draw")
         else:
             print("House Wins!")
+    
+    elif challenger_current_points == 21:
+        print(f"{Challenger.username} Wins!")
+    
+    elif challenger_current_points > 21:
+        if house_current_points > 21:
+            if challenger_current_points == house_current_points:
+                print("Draw")
+            elif challenger_current_points > house_current_points:
+                print("House Wins!")
+            else:
+                print(f"{Challenger.username} Wins!")
+        else:
+            print("House Wins!")
+    elif house_current_points > 21:
+        print(f"{Challenger.username} Wins!")
+    
+    elif challenger_current_points < 21:
+        if house_current_points < 21:
+            if challenger_current_points == house_current_points:
+                print("Draw")
+            elif challenger_current_points > house_current_points:
+                print(f"{Challenger.username} Wins!")
+            else:
+                print("House Wins!")
+    
+        else:
+            print(f"{Challenger.username} Wins!")
+        
+    
