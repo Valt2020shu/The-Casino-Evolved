@@ -15,9 +15,9 @@ class player:
 def weight(current_points, remaining_cards):
     chance = 0.5
     for i in remaining_cards:
-        if i + current_points < 21:
+        if remaining_cards.index(i) + current_points < 21:
             chance += 0.1
-        elif i + current_points > 21:
+        elif remaining_cards.index(i) + current_points > 21:
             chance -= 0.1
         else:
             chance += 0.2
@@ -51,19 +51,13 @@ def pull(user, remaining_cards, forced = False):
 
             return True
         else:
+            print("House chose to stand")
             return False
 
 
 
-    
 
-
-
-House = player('Computer','The Dealer')
-player_name = input("Enter user: ")
-Challenger = player('Challenger', player_name)
-
-def game(Challenger, House, remaining_cards):
+def game(Challenger, House):
     remaining_cards = list(base_deck)
     pull(Challenger, remaining_cards,True)
     pull(House, remaining_cards,True)
@@ -74,7 +68,7 @@ def game(Challenger, House, remaining_cards):
     while True:
         while True:
             user_input = input("Do you want to Hit (Draw) or Stand (Don't Draw): ").strip().title()
-            if user_input in ('Hit', 'Draw'):
+            if user_input in ('Hit', 'Stand'):
                 break
             else:
                 print("Please choose a valid option")
@@ -90,23 +84,37 @@ def game(Challenger, House, remaining_cards):
             break
         
         turn_end(House,Challenger)
-        game_end(House,Challenger)
+        if House.current_points > 21 or Challenger.current_points > 21:
+            game_end(House,Challenger)
+            return
+        elif House.current_points == 21 or Challenger.current_points == 21:
+            game_end(House,Challenger)
+            return
         
 
 
 
 def turn_end(House, Challenger):
         print(House.username, f'has',end= ' ')
-        for i in House.card_held:
-            print(i,end=' ')
+        for i in House.cards_held:
+            if House.cards_held[-1] == i:
+                print(i)
+            else:
+                print(i,end=',')
 
         print(Challenger.username, f'has',end= ' ')
-        for i in Challenger.card_held:
-            print(i,end=' ')
+        for i in Challenger.cards_held:
+            if Challenger.cards_held[-1] == i:
+                print(i)
+            else:
+                print(i,end=',')
+        
 
 def game_end(House, Challenger): 
     house_current_points = House.current_points
     challenger_current_points = Challenger.current_points
+    print(f"House has {house_current_points}")
+    print(f"{Challenger.username} has {challenger_current_points}")
 
     if house_current_points == 21:
         if challenger_current_points == 21:
@@ -141,5 +149,14 @@ def game_end(House, Challenger):
     
         else:
             print(f"{Challenger.username} Wins!")
+    else:
+        pass
         
     
+
+
+House = player('Computer','The Dealer')
+player_name = input("Enter user: ")
+Challenger = player('Challenger', player_name)
+
+game(Challenger,House)
